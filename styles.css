@@ -1,0 +1,647 @@
+/* ==========================================================================
+   3D RACING GAME - CYBERPUNK / SYNTHWAVE DESIGN SYSTEM
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+    --bg-dark: #060814;
+    --primary-cyan: #00f0ff;
+    --secondary-magenta: #ff0055;
+    --accent-purple: #9d00ff;
+    --accent-gold: #ffb703;
+    --text-main: #f0f4fc;
+    --text-muted: #8a9bb8;
+    --glass-bg: rgba(10, 14, 28, 0.72);
+    --glass-border: rgba(0, 240, 255, 0.25);
+    --glass-glow: 0 8px 32px 0 rgba(0, 240, 255, 0.15);
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    font-family: var(--font-body);
+    color: var(--text-main);
+}
+
+#game-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   UI SCREENS & OVERLAYS
+   ========================================================================== */
+
+.ui-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.ui-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-glow);
+    padding: 40px;
+    text-align: center;
+    max-width: 580px;
+    width: 90%;
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-cyan), transparent);
+    animation: scanline 4s linear infinite;
+}
+
+@keyframes scanline {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(50%); }
+}
+
+/* Menu Typography */
+.game-title {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #ffffff 0%, var(--primary-cyan) 50%, var(--secondary-magenta) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.game-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+/* Cyber Buttons */
+.cyber-btn {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 14px 32px;
+    border-radius: 12px;
+    border: 1px solid var(--primary-cyan);
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(157, 0, 255, 0.2));
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    width: 100%;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2);
+}
+
+.cyber-btn:hover {
+    background: linear-gradient(135deg, var(--primary-cyan), var(--accent-purple));
+    color: #000000;
+    text-shadow: none;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 240, 255, 0.5);
+}
+
+.cyber-btn.btn-secondary {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
+}
+
+.cyber-btn.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+/* Controls Info Pill */
+.controls-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.key-badge {
+    background: rgba(0, 240, 255, 0.15);
+    border: 1px solid var(--primary-cyan);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--primary-cyan);
+}
+
+/* ==========================================================================
+   GARAGE & VEHICLE CUSTOMIZATION
+   ========================================================================== */
+
+.color-palette {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.color-swatch {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.color-swatch:hover {
+    transform: scale(1.15);
+}
+
+.color-swatch.selected {
+    border-color: #ffffff;
+    box-shadow: 0 0 15px currentColor;
+}
+
+.stats-grid {
+    display: grid;
+    gap: 14px;
+    margin: 25px 0;
+    text-align: left;
+}
+
+.stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+}
+
+.stat-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-cyan), var(--accent-purple));
+    border-radius: 4px;
+}
+
+/* ==========================================================================
+   HEADS-UP DISPLAY (HUD)
+   ========================================================================== */
+
+#screen-racing {
+    pointer-events: none;
+    display: block;
+    padding: 24px;
+}
+
+#screen-racing * {
+    pointer-events: auto;
+}
+
+/* Top HUD Bar */
+.hud-top-bar {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+}
+
+.hud-pill {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: var(--glass-glow);
+    pointer-events: auto;
+}
+
+.hud-pill-label {
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+}
+
+.hud-pill-value {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.pos-num {
+    font-size: 2rem;
+    color: var(--accent-gold);
+    text-shadow: 0 0 15px rgba(255, 183, 3, 0.6);
+}
+
+.pos-suf {
+    font-size: 1rem;
+    color: var(--accent-gold);
+    margin-left: 2px;
+}
+
+/* HUD Action Buttons (Top Center) */
+.hud-action-btns {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.hud-icon-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: #ffffff;
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.hud-icon-btn:hover {
+    background: var(--primary-cyan);
+    color: #000000;
+    box-shadow: 0 0 15px var(--primary-cyan);
+}
+
+/* Mini-Map */
+.hud-minimap-container {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: var(--glass-glow);
+    pointer-events: auto;
+}
+
+#hud-minimap {
+    display: block;
+    width: 140px;
+    height: 140px;
+}
+
+/* Countdown Overlay */
+#hud-countdown {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-heading);
+    font-size: 7rem;
+    font-weight: 900;
+    color: var(--primary-cyan);
+    text-shadow: 0 0 50px var(--primary-cyan), 0 0 100px var(--secondary-magenta);
+    pointer-events: none;
+}
+
+.pulse-number {
+    animation: zoomPulse 0.8s ease-out;
+}
+
+@keyframes zoomPulse {
+    0% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.8; }
+}
+
+/* Toast Notifications */
+#hud-toast {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: linear-gradient(90deg, rgba(0, 240, 255, 0.85), rgba(255, 0, 85, 0.85));
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 8px 24px;
+    border-radius: 30px;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+    z-index: 50;
+}
+
+#hud-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   SPEEDOMETER & TELEMETRY GAUGE CLUSTER
+   ========================================================================== */
+
+.hud-cluster-bottom-right {
+    position: absolute;
+    bottom: 28px;
+    right: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.speedo-dial {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    background: radial-gradient(circle, rgba(10, 14, 28, 0.9) 0%, rgba(6, 8, 20, 0.95) 100%);
+    border: 2px solid var(--glass-border);
+    border-radius: 50%;
+    box-shadow: var(--glass-glow), inset 0 0 20px rgba(0, 240, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.speedo-needle {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 65px;
+    background: linear-gradient(to top, var(--secondary-magenta), #ff88a3);
+    border-radius: 4px;
+    transform-origin: bottom center;
+    transform: rotate(-120deg);
+    transition: transform 0.05s linear;
+    box-shadow: 0 0 10px var(--secondary-magenta);
+}
+
+.speedo-center-pin {
+    position: absolute;
+    top: calc(50% - 10px);
+    left: calc(50% - 10px);
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    border: 3px solid var(--secondary-magenta);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.8);
+}
+
+.speedo-readout {
+    position: absolute;
+    bottom: 22px;
+    text-align: center;
+}
+
+.speedo-digits {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 15px var(--primary-cyan);
+    line-height: 1;
+}
+
+.speedo-unit {
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    color: var(--primary-cyan);
+    letter-spacing: 1.5px;
+}
+
+.rpm-bar-container {
+    width: 170px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+#hud-rpm-bar {
+    height: 100%;
+    width: 5%;
+    background: linear-gradient(90deg, var(--primary-cyan), var(--accent-purple));
+    transition: width 0.05s linear;
+}
+
+.gear-display {
+    position: absolute;
+    top: 25px;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+}
+
+/* Nitro Boost Bar (Bottom Left) */
+.hud-cluster-bottom-left {
+    position: absolute;
+    bottom: 28px;
+    left: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    pointer-events: none;
+}
+
+.nitro-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary-cyan);
+    letter-spacing: 1px;
+}
+
+.nitro-bar-bg {
+    width: 180px;
+    height: 14px;
+    background: rgba(10, 14, 28, 0.8);
+    border: 1px solid var(--primary-cyan);
+    border-radius: 7px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+#hud-nitro-bar {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #0088ff, #00f0ff);
+    box-shadow: 0 0 10px var(--primary-cyan);
+    transition: width 0.1s ease;
+}
+
+.pulse-nitro {
+    animation: nitroFlash 0.25s infinite alternate;
+}
+
+@keyframes nitroFlash {
+    from { filter: brightness(1.0); }
+    to { filter: brightness(1.8) drop-shadow(0 0 12px #ffffff); }
+}
+
+/* ==========================================================================
+   MOBILE ON-SCREEN TOUCH CONTROLS
+   ========================================================================== */
+
+.mobile-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.touch-group {
+    display: flex;
+    gap: 12px;
+    pointer-events: auto;
+}
+
+.touch-btn {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: rgba(10, 14, 28, 0.75);
+    border: 2px solid var(--primary-cyan);
+    color: #ffffff;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.1s, background 0.1s;
+}
+
+.touch-btn:active, .touch-btn.active {
+    background: var(--primary-cyan);
+    color: #000000;
+    transform: scale(0.92);
+}
+
+.touch-btn.btn-nitro-touch {
+    border-color: var(--secondary-magenta);
+}
+
+.touch-btn.btn-nitro-touch:active {
+    background: var(--secondary-magenta);
+}
+
+/* Hide touch controls on desktop if no touch support */
+@media (hover: hover) and (pointer: fine) {
+    .mobile-controls {
+        display: none;
+    }
+}
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+    .game-title { font-size: 2.2rem; }
+    .glass-panel { padding: 24px; }
+    .speedo-dial { width: 130px; height: 130px; }
+    .speedo-needle { height: 48px; }
+    .speedo-digits { font-size: 1.6rem; }
+    .hud-minimap-container { top: 75px; right: 12px; }
+    #hud-minimap { width: 100px; height: 100px; }
+    .hud-top-bar { top: 12px; left: 12px; right: 12px; }
+    .hud-cluster-bottom-right { bottom: 80px; right: 12px; }
+    .hud-cluster-bottom-left { bottom: 80px; left: 12px; }
+}
