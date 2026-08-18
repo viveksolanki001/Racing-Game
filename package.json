@@ -1,0 +1,23 @@
+{
+  "name": "cyber-velocity-3d-racing-game",
+  "version": "1.0.0",
+  "description": "3D Cyberpunk Racing Game built with Three.js and Web Audio",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve -l 3000 .",
+    "start": "serve -l 3000 .",
+    "serve": "serve -l 3000 ."
+  },
+  "keywords": [
+    "threejs",
+    "racing-game",
+    "webgl",
+    "game-dev",
+    "cyberpunk"
+  ],
+  "author": "Vivek Solanki",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}
